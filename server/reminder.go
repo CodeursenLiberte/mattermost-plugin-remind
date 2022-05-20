@@ -59,11 +59,11 @@ func (p *Plugin) TriggerReminders() {
 			p.API.LogInfo(fmt.Sprintf("Too many reminder ticks were missed: occurrences between %v and %v will be dropped.", lastTickAt, catchupStart))
 		}
 
-		p.API.LogDebug(fmt.Sprintf("Catching up on %v reminder tick(s)...", tickAt.Sub(catchupStart).Seconds()))
+		p.API.LogInfo(fmt.Sprintf("Catching up on %v reminder tick(s)...", tickAt.Sub(catchupStart).Seconds()))
 		for tick := catchupStart; tick.Before(tickAt); tick = tick.Add(oneSecond) {
 			p.TriggerRemindersForTick(tick)
 		}
-		p.API.LogDebug("Caught up on missed reminder ticks.")
+		p.API.LogInfo("Caught up on missed reminder ticks.")
 	}
 
 	// Trigger the actual tick
@@ -71,7 +71,7 @@ func (p *Plugin) TriggerReminders() {
 }
 
 func (p *Plugin) TriggerRemindersForTick(tickAt time.Time) {
-	p.API.LogDebug("Trigger reminders for " + fmt.Sprintf("%v", tickAt))
+	p.API.LogInfo("Trigger reminders for " + fmt.Sprintf("%v", tickAt))
 
 	// Look up reminders to be triggered for the tick time
 	bytes, err := p.API.KVGet(string(fmt.Sprintf("%v", tickAt)))
